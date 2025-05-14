@@ -1,0 +1,82 @@
+<?php
+
+/**
+ * Implements hook_node_view().
+ */
+function vaterno_comments_node_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode)
+{
+    if ($view_mode != 'full') {
+        return;
+    }
+
+    $request = \Drupal::request();
+    $entityManager = \Drupal::entityTypeManager();
+    /** @var \Drupal\vaterno_comments\Repository\CommentsRepositoryInterface $commentsRepository */
+    $commentsRepository = \Drupal::service('vaterno_comments.comments_repository');
+    $commentForm = \Drupal::formBuilder()->getForm('Drupal\vaterno_comments\Form\FrontendCommentForm', $entity);
+
+    $itemsPerPage = 5;
+    $offset = $request->get('page', 0) * $itemsPerPage;
+    $comments = $commentsRepository->getCommentsByEntityId($entity->id(), $offset);
+
+    $usersOfComments = [];
+    if (!empty($comments)) {
+        $commentsUsersIds = array_reduce($comments, function($carry, $comment) {
+            /** @var \Drupal\vaterno_comments\Entity\CommentInterface $comment */
+            $userId = $comment->getUserId();
+
+            $carry[$userId] = $userId;
+            return $carry;
+        });
+
+        if (!empty($commentsUsersIds)) {
+            $usersOfComments = $entityManager
+                ->getStorage('user')
+                ->loadMultiple($commentsUsersIds);
+        }
+    }
+
+    $commentsTags = \Drupal\vaterno_comments\Helper\CommentCacheHelper::createCacheTags($comments);
+    $totalComments = $commentsRepository->getTotalCommentsByEntityId($entity->id());
+
+    \Drupal::service('pager.manager')->createPager($totalComments, $itemsPerPage);
+
+    $build['vaterno_comments_wrapper'] = [
+        'form' => [
+            '#type' => 'container',
+            '#attributes' => ['class' => ['vaterno-comments-form']],
+            'form' => $commentForm,
+        ],
+        'list' => [
+            '#theme' => 'vaterno_comments_list',
+            '#comments' => $comments,
+            '#usersOfComments' => $usersOfComments,
+            '#attached' => ['library' => ['vaterno_comments/vaterno_comments_list']],
+        ],
+        'pager' => [
+            '#type' => 'pager',
+        ],
+        '#cache' => [
+            'tags' => array_merge($commentsTags['comments'], $commentsTags['users']),
+            'contexts' => ['user.permissions'],
+            'max-age' => \Drupal\Core\Cache\Cache::PERMANENT,
+        ],
+        '#weight' => 10,
+        '#attributes' => ['id' => ['vaterno-comments-wrapper']],
+    ];
+}
+
+/**
+ * Implements hook_theme().
+ */
+function vaterno_comments_theme($existing, $type, $theme, $path): array
+{
+    return [
+        'vaterno_comments_list' => [
+            'variables' => [
+              'comments' => null,
+              'usersOfComments' => null,
+            ],
+        ],
+    ];
+}

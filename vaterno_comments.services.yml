@@ -1,0 +1,4 @@
+services:
+    vaterno_comments.comments_repository:
+        class: Drupal\vaterno_comments\Repository\CommentsRepository
+        arguments: ['@entity_type.manager']

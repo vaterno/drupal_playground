@@ -1,0 +1,5 @@
+vaterno_comments_list:
+    version: 1.x
+    css:
+        theme:
+            css/vaterno_comments_list.css: {}

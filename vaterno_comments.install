@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function vaterno_comments_install()
+{
+    \Drupal::entityTypeManager()->clearCachedDefinitions();
+    $entity_type = \Drupal::entityTypeManager()->getDefinition('vaterno_comment');
+
+    \Drupal::entityDefinitionUpdateManager()->installEntityType($entity_type);
+}

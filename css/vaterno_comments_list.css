@@ -1,0 +1,32 @@
+.clearfix {
+    overflow: auto;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.vaterno-comments-list {
+    margin-top: 20px;
+}
+
+.vaterno-comments-comment {
+    border: 1px solid #000000;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.vaterno-comments-comment > * {
+    margin: 0;
+}
+
+.vaterno-comments-comment__author {
+    float: left;
+}
+
+.vaterno-comments-comment__date {
+    float: right;
+}

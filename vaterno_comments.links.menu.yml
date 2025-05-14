@@ -1,0 +1,5 @@
+entity.vaterno_comment.collection:
+    title: 'Comments'
+    parent: system.admin_structure
+    description: 'List of comments'
+    route_name: entity.vaterno_comment.collection

@@ -1,0 +1,13 @@
+user view vaterno_comments entities:
+    title: 'View comment entities'
+user edit vaterno_comments entities:
+    title: 'Edit comment entities'
+user delete vaterno_comments entities:
+    title: 'Delete comment entities'
+user add vaterno_comments entities:
+    title: 'Create new comment entities'
+
+administer vaterno_comments:
+    title: 'Administer vaterno comments'
+    description: 'Allows full access to manage all vaterno comments.'
+    restrict access: TRUE

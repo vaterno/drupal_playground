@@ -1,0 +1,23 @@
+<div class="vaterno-comments-list">
+    {% for comment in comments %}
+        {% set commentUserId = comment.user_id.target_id %}
+
+        <div class="vaterno-comments-comment">
+            <div class="clearfix">
+                {% if usersOfComments[commentUserId] is defined %}
+                    <p class="vaterno-comments-comment__author">
+                        {{ usersOfComments[commentUserId].getDisplayName() }}
+                    </p>
+                {% endif %}
+
+                <p class="vaterno-comments-comment__date">
+                    {{ comment.created.value|date('Y-m-d H:i') }}
+                </p>
+            </div>
+
+            <p class="vaterno-comments-comment__text">
+                {{ comment.comment_text.value|raw }}
+            </p>
+        </div>
+    {% endfor %}
+</div>

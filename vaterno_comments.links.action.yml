@@ -1,0 +1,5 @@
+entity.vaterno_comment.add_form:
+    title: 'Add comment'
+    route_name: entity.vaterno_comment.add_form
+    appears_on:
+        - entity.vaterno_comment.collection
