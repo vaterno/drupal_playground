@@ -1,0 +1,7 @@
+block.block.vaterno_comments_last_comments_block:
+    type: config_type
+    label: "Last vaterno comments block"
+    mapping:
+        maxLastCommentsToShow:
+            type: integer
+            label: "Maximum last number of comments to show"
