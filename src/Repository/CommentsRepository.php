@@ -13,6 +13,20 @@ class CommentsRepository implements CommentsRepositoryInterface
         $this->entityTypeManager = $entityTypeManager;
     }
 
+    public function getLastPublishedComments(int $limit = 5): array
+    {
+        $storage = $this->entityTypeManager->getStorage('vaterno_comment');
+
+        $commentIds = $storage->getQuery()
+            ->condition('is_published', TRUE)
+            ->sort('created', 'DESC')
+            ->range(0, $limit)
+            ->accessCheck(FALSE)
+            ->execute();
+
+        return $storage->loadMultiple($commentIds);
+    }
+
     public function getCommentsByEntityId(int $entityId, int $offset = 0, int $itemsPerPage = 5): array
     {
         $storage = $this->entityTypeManager->getStorage('vaterno_comment');

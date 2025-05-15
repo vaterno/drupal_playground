@@ -1,0 +1,9 @@
+<div id="vaterno_comments_last_comments">
+    {% for comment in comments %}
+        <div class="vaterno_comments_last_comment">
+            <a href="{{ comment.url }}" class="vaterno_comments_last_comment__link">
+                {{ comment.label() }}
+            </a>
+        </div>
+    {% endfor %}
+</div>

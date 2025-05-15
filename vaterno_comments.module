@@ -78,5 +78,10 @@ function vaterno_comments_theme($existing, $type, $theme, $path): array
               'usersOfComments' => null,
             ],
         ],
+        'vaterno_comments_last_comments' => [
+            'variables' => [
+                'comments' => null,
+            ],
+        ]
     ];
 }
